@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/office-site', 'BacksiteController@index');
+Route::middleware('auth')->group(function() {
+    Route::get('/office-site', "BacksiteController@index");
+    Route::get('/office-site/register', "BacksiteController@register");
+    Route::post('/office-site/logout', "Auth\LoginController@logout")->name('logout.auth');
+});
+Route::get('/office-site/login', "BacksiteController@login")->name('login.backsite');
+Route::post('/office-site/login', "Auth\LoginController@login")->name('login.auth');
 
-Route::get('/', 'HomeController@index');
+Route::get('/{any}', 'HomeController@index')->where('any', '.*');
+
+// Auth::routes();
+

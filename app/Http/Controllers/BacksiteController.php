@@ -10,4 +10,14 @@ class BacksiteController extends Controller
     {
         return view('layouts.master');
     }
+
+    public function login()
+    {
+        return view('backsite.login');
+    }
+
+    public function register()
+    {
+        return view('backsite.register');
+    }
 }
