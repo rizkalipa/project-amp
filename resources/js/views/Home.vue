@@ -44,7 +44,7 @@ export default {
             return this.$store.getters.products
         }
     },
-    mounted() {
+    beforeMount() {
         this.loading = true
         this.$store.dispatch('getUser')
             .then(response => {

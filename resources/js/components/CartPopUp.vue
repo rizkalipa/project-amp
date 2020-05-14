@@ -42,6 +42,8 @@ export default {
         return {
             image: this.payload[0].image,
             countProduct: 1,
+            productPrice: 100,
+            promoCode: 'Test',
             loading: false
         }
     },
@@ -51,11 +53,16 @@ export default {
 
             this.$store.dispatch('saveToCart', { 
                 product_id: this.payload[0].id,
-                total_count: this.countProduct
+                total_count: this.countProduct,
+                total_price: this.productPrice,
+                promo_code: this.promoCode,
             })
             .then(response => {
                 this.loading = false
                 this.$emit('closePopUp', false)
+            })
+            .catch(error => {
+                this.loading = false
             })
         }
     }

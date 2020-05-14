@@ -37,10 +37,24 @@ export default {
             name: '',
             email: '',
             password: '',
+            loading: false,
         }
     },
     methods: {
-        
+        registerUser() {
+            this.loading = true;
+
+            this.$store.dispatch('registerUser', {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+            }).then(response => { 
+                this.loading = false
+                this.$router.push('/login')    
+            }).catch(error => {
+                this.loading = false
+            })
+        }
     }
 }
 </script>

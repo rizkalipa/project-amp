@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Cart;
+use App\Product;
 
 class CartController extends Controller
 {
@@ -11,15 +13,20 @@ class CartController extends Controller
     public function addCart(Request $request) 
     {
         $request->validate([
-            'total_count' => 'required|min:0'
+            'total_count' => 'required|min:1'
         ]);
 
-        $cart = \App\Cart::create([
-            'user_id' => auth()->user()->id,
-            'product_id' => $request->product_id,
-            'total_count' => $request->total_count
-        ]);
+        if (isset(auth()->user()->cart->id)) {
+            $cart = Cart::find(auth()->user()->cart->id);
+        } else {
+            $cart = \App\Cart::create([
+                'user_id' => auth()->user()->id,
+                'total_count' => $request->total_count,
+                'total_price' => $request->total_price,
+                'promo_code' => $request->promo_code,
+            ]);
+        }
 
-        return response()->json($cart, 200);
+        $cart->products()->save(Product::find($request->product_id));
     }
 }

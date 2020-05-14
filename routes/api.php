@@ -18,7 +18,7 @@ Route::middleware('auth:api')->group(function() {
     Route::get('/user', function (Request $request) {
         $id = auth()->user()->id;
 
-        return \App\User::where('id', $id)->with('carts.product')->first();
+        return \App\User::where('id', $id)->with('cart.products')->first();
     });
 
     Route::get('/cart-list/{id}', function($id) {

@@ -2065,6 +2065,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       image: this.payload[0].image,
       countProduct: 1,
+      productPrice: 100,
+      promoCode: 'Test',
       loading: false
     };
   },
@@ -2075,11 +2077,15 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       this.$store.dispatch('saveToCart', {
         product_id: this.payload[0].id,
-        total_count: this.countProduct
+        total_count: this.countProduct,
+        total_price: this.productPrice,
+        promo_code: this.promoCode
       }).then(function (response) {
         _this.loading = false;
 
         _this.$emit('closePopUp', false);
+      })["catch"](function (error) {
+        _this.loading = false;
       });
     }
   }
@@ -2366,7 +2372,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      cartCount: 2,
       wishCount: 3,
       listMenu: false,
       cartList: false
@@ -2379,7 +2384,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     cartFillStyle: function cartFillStyle() {
-      return this.carts != null ? true : false;
+      return this.products.length > 0 ? true : false;
     },
     wishFillStyle: function wishFillStyle() {
       return this.wishCount > 0 ? true : false;
@@ -2389,10 +2394,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     carts: function carts() {
       return this.$store.getters.carts;
+    },
+    products: function products() {
+      return this.carts.products || [];
     }
-  },
-  mounted: function mounted() {
-    console.log(this.carts);
   }
 });
 
@@ -2514,7 +2519,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters.products;
     }
   },
-  mounted: function mounted() {
+  beforeMount: function beforeMount() {
     var _this = this;
 
     this.loading = true;
@@ -2694,10 +2699,28 @@ __webpack_require__.r(__webpack_exports__);
     return {
       name: '',
       email: '',
-      password: ''
+      password: '',
+      loading: false
     };
   },
-  methods: {}
+  methods: {
+    registerUser: function registerUser() {
+      var _this = this;
+
+      this.loading = true;
+      this.$store.dispatch('registerUser', {
+        name: this.name,
+        email: this.email,
+        password: this.password
+      }).then(function (response) {
+        _this.loading = false;
+
+        _this.$router.push('/login');
+      })["catch"](function (error) {
+        _this.loading = false;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -4502,8 +4525,8 @@ var render = function() {
       {
         staticClass: "block bg-white text-black shadow-md mt-5 rounded absolute"
       },
-      _vm._l(_vm.carts, function(cart) {
-        return _c("router-link", { key: cart.id, attrs: { to: "/login" } }, [
+      _vm._l(_vm.carts.products, function(cart, index) {
+        return _c("router-link", { key: index, attrs: { to: "/login" } }, [
           _c(
             "div",
             {
@@ -4512,18 +4535,15 @@ var render = function() {
               attrs: { href: "" }
             },
             [
-              _c("img", {
-                staticClass: "w-1/5",
-                attrs: { src: cart.product.image }
-              }),
+              _c("img", { staticClass: "w-1/5", attrs: { src: cart.image } }),
               _vm._v(" "),
               _c("div", { staticClass: "ml-3" }, [
                 _c("p", { staticClass: "text-md mb-2" }, [
-                  _vm._v(_vm._s(cart.product.name))
+                  _vm._v(_vm._s(cart.name))
                 ]),
                 _vm._v(" "),
                 _c("p", { staticClass: "text-sm text-gray-500" }, [
-                  _vm._v("Order qty : " + _vm._s(cart.total_count))
+                  _vm._v("Order qty : " + _vm._s(_vm.carts.total_count))
                 ])
               ])
             ]
@@ -4788,9 +4808,9 @@ var render = function() {
           [
             _vm._m(1),
             _vm._v(" "),
-            _vm.carts != null
+            _vm.products.length > 0
               ? _c("span", { staticClass: "ml-2 text-sm" }, [
-                  _vm._v(_vm._s(_vm.carts.length))
+                  _vm._v(_vm._s(_vm.products.length))
                 ])
               : _vm._e(),
             _vm._v(" "),
@@ -22623,7 +22643,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.products;
     },
     carts: function carts(state) {
-      return state.user.carts || null;
+      return state.user.cart || [];
     }
   },
   actions: {
@@ -22656,22 +22676,18 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     registerUser: function registerUser(context, data) {
-      var _this = this;
-
-      this.loading = true;
-      axios.post('/api/register', {
-        name: data.name,
-        email: data.email,
-        password: data.password
-      }).then(function (response) {
-        data.loading = false;
-
-        _this.$router.push('/');
-
-        console.log(response);
-      })["catch"](function (error) {
-        data.loading = false;
-        console.log(error.response);
+      axios.defaults.headers.post['Accept'] = 'application/json';
+      return new Promise(function (resolve, reject) {
+        axios.post('/api/register', {
+          name: data.name,
+          email: data.email,
+          password: data.password
+        }).then(function (response) {
+          resolve(response);
+        })["catch"](function (error) {
+          reject(error);
+          console.log(error.response);
+        });
       });
     },
     getUser: function getUser(context) {
@@ -22680,6 +22696,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.get('/api/user').then(function (response) {
           context.commit('setUser', response.data);
           resolve(response);
+          console.log(response.data);
         })["catch"](function (error) {
           reject(error);
         });

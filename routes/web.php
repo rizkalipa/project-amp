@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/backsite', function() {
-    return 'This is backsite';
-});
+Route::get('/office-site', 'BacksiteController@index');
 
-Route::get('/{any}', 'HomeController@index')->where('any', '.*');
+Route::get('/', 'HomeController@index');

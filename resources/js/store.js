@@ -35,7 +35,7 @@ export default {
             return state.products
         },
         carts(state) {
-            return state.user.carts || null
+            return state.user.cart || []
         }
     },
     actions: {
@@ -72,19 +72,20 @@ export default {
             })
         },
         registerUser(context, data) {
-            this.loading = true;
-            axios.post('/api/register', {
-                name: data.name,
-                email: data.email,
-                password: data.password
-            }).then(response => {
-                data.loading = false
-                this.$router.push('/')
-                console.log(response)
-            }).catch(error => {
-                data.loading = false
-                console.log(error.response)
-            })
+            axios.defaults.headers.post['Accept'] = 'application/json'
+
+           return new Promise((resolve, reject) => {
+                axios.post('/api/register', {
+                    name: data.name,
+                    email: data.email,
+                    password: data.password
+                }).then(response => {
+                    resolve(response);
+                }).catch(error => {
+                    reject(error)
+                    console.log(error.response)
+                })
+           })
         },
         getUser(context) {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token 
@@ -94,6 +95,7 @@ export default {
                     .then(response => {
                         context.commit('setUser', response.data)
                         resolve(response)
+                        console.log(response.data)
                     })
                     .catch(error => {
                         reject(error)

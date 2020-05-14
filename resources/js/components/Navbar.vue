@@ -15,7 +15,7 @@
             </p>
             <p class="px-5" @mouseover="cartList = true" @mouseleave="cartList = false" :class="{ 'mx-8 py-1 rounded-full text-white bg-blue-600': cartFillStyle }">
                 <span><i class="fas fa-shopping-cart"></i></span>
-                <span v-if="carts != null" class="ml-2 text-sm">{{ carts.length }}</span>
+                <span v-if="products.length > 0" class="ml-2 text-sm">{{ products.length }}</span>
 
                 <transition name="fade">
                     <FloatCartList v-show="cartList" />
@@ -36,7 +36,6 @@ export default {
     components: {FloatListMenu},
     data() {
         return {
-            cartCount: 2,
             wishCount: 3,
             listMenu: false,
             cartList: false,
@@ -49,7 +48,7 @@ export default {
     },
     computed : {
         cartFillStyle() {
-            return this.carts != null ? true : false;
+            return this.products.length > 0 ? true : false;
         },
         wishFillStyle() {
             return this.wishCount > 0 ? true : false;
@@ -59,10 +58,10 @@ export default {
         },
         carts() {
             return this.$store.getters.carts
+        },
+        products() {
+            return this.carts.products || []
         }
-    },
-    mounted() {
-        console.log(this.carts)
     }
 };
 </script>
