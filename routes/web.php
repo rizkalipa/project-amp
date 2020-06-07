@@ -17,6 +17,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/office-site', "BacksiteController@index");
     Route::get('/office-site/register', "BacksiteController@register");
     Route::post('/office-site/logout', "Auth\LoginController@logout")->name('logout.auth');
+
+    Route::get('/office-site/products', 'ProductController@index')->name('product.index');
+    Route::get('/office-site/users', 'UserController@index')->name('user.index');
 });
 Route::get('/office-site/login', "BacksiteController@login")->name('login.backsite');
 Route::post('/office-site/login', "Auth\LoginController@login")->name('login.auth');
