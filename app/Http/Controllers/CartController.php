@@ -8,7 +8,10 @@ use App\Product;
 
 class CartController extends Controller
 {
-    public function index() {}
+    public function index() 
+    {
+        return view('backsite.carts.index', ['carts' => \App\Cart::with('products')->get()]);
+    }
 
     public function addCart(Request $request) 
     {

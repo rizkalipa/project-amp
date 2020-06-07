@@ -76,7 +76,21 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ route('product.index') }}">Product Data</a>
+            <a class="collapse-item" href="{{ route('product.create') }}">Create Product</a>
             <a class="collapse-item" href="">Selling Rate</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Utilities Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#cartCollapse" aria-expanded="true" aria-controls="cartCollapse">
+          <i class="fas fa-fw fa-shopping-cart"></i>
+          <span>Carts</span>
+        </a>
+        <div id="cartCollapse" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{{ route('cart.index') }}">Cart on Air</a>
           </div>
         </div>
       </li>

@@ -19,6 +19,14 @@ Route::middleware('auth')->group(function() {
     Route::post('/office-site/logout', "Auth\LoginController@logout")->name('logout.auth');
 
     Route::get('/office-site/products', 'ProductController@index')->name('product.index');
+    Route::get('/office-site/products/create', 'ProductController@create')->name('product.create');
+    Route::post('/office-site/products/store', 'ProductController@store')->name('product.store');
+    Route::get('/office-site/products/{product}/edit', 'ProductController@edit')->name('product.edit');
+    Route::post('/office-site/products/update', 'ProductController@update')->name('product.update');
+    Route::post('/office-site/products/destroy', 'ProductController@destroy')->name('product.destroy');
+
+    Route::get('/office-site/carts', 'CartController@index')->name('cart.index');
+
     Route::get('/office-site/users', 'UserController@index')->name('user.index');
 });
 Route::get('/office-site/login', "BacksiteController@login")->name('login.backsite');
