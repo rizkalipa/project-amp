@@ -95,6 +95,19 @@
         </div>
       </li>
 
+      <!-- Nav Item - Utilities Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#wishlistCollapse" aria-expanded="true" aria-controls="wishlistCollapse">
+          <i class="fas fa-fw fa-heart"></i>
+          <span>Wishlist</span>
+        </a>
+        <div id="wishlistCollapse" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{{ route('wishlist.index') }}">Wishlist Data</a>
+          </div>
+        </div>
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 

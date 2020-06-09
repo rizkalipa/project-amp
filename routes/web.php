@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/tes', function () {
+    $wishlist = \App\Wishlist::find(5);
+
+    return !$wishlist ? 'true' : 'false';
+});
 
 Route::middleware('auth')->group(function() {
     Route::get('/office-site', "BacksiteController@index");
@@ -26,7 +31,7 @@ Route::middleware('auth')->group(function() {
     Route::post('/office-site/products/destroy', 'ProductController@destroy')->name('product.destroy');
 
     Route::get('/office-site/carts', 'CartController@index')->name('cart.index');
-
+    Route::get('/office-site/wishlist', 'WishlistController@index')->name('wishlist.index');
     Route::get('/office-site/users', 'UserController@index')->name('user.index');
 });
 Route::get('/office-site/login', "BacksiteController@login")->name('login.backsite');

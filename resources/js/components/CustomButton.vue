@@ -28,7 +28,7 @@
             },
             hoverClr() {
                 return `hover:${this.hoverColor}`
-            }
+            },
         }
     }
 </script>

@@ -7,10 +7,13 @@
         </p>
         <div class="flex justify-between">
             <CartButton :id="id" />
-            <CustomButtom bg-color="bg-red-600 rounded-full" size="lg" text-color="text-white" hover-color="bg-red-500">
+            <div @click="addWishlist">
+                <CustomButtom bg-color="bg-red-600 rounded-full" size="lg" text-color="text-white" hover-color="bg-red-500">
                 <span class="i fas fa-heart"></span>
             </CustomButtom>
+            </div>
         </div>
+        <LoadingScreen v-if="loading" />
     </div>
 </template>
 
@@ -18,8 +21,24 @@
     import CustomButtom from "./CustomButton";
     export default {
         name: "CardProduct",
+        data() {
+            return {
+                loading: false
+            }
+        },
         components: {CustomButtom},
-        props: [ 'title', 'image', 'id' ]
+        props: [ 'title', 'image', 'id' ],
+        methods: {
+            addWishlist() {
+                this.loading = true
+
+                setTimeout(() => {
+                   this.$store.dispatch('addWishlist', { id: this.id }).then(response => {
+                    this.loading = false
+                }) 
+                }, 1000);
+            }
+        }
     }
 </script>
 

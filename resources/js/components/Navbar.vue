@@ -23,7 +23,7 @@
             </p>
             <p class="px-5">
                 <span><i class="fas fa-heart" :class="{ 'text-red-600': wishFillStyle }"></i></span>
-                <span v-if="wishCount > 0" class="ml-2 text-sm">{{ wishCount }}</span>
+                <span v-if="wishProductCount > 0" class="ml-2 text-sm">{{ wishProductCount }}</span>
             </p>
         </div>
     </div>
@@ -36,7 +36,6 @@ export default {
     components: {FloatListMenu},
     data() {
         return {
-            wishCount: 3,
             listMenu: false,
             cartList: false,
         }
@@ -51,7 +50,7 @@ export default {
             return this.products.length > 0 ? true : false;
         },
         wishFillStyle() {
-            return this.wishCount > 0 ? true : false;
+            return this.wishProductCount > 0 ? true : false;
         },
         username() {
             return this.$store.getters.username
@@ -61,6 +60,12 @@ export default {
         },
         products() {
             return this.carts.products || []
+        },
+        wishProductCount() {
+            return this.wishlist.products ? this.wishlist.products.length : 0 
+        },
+        wishlist() {
+            return this.$store.getters.wishlist
         }
     }
 };

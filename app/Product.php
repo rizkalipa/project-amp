@@ -12,4 +12,9 @@ class Product extends Model
     {
         $this->belongsToMany(\App\Cart::class);
     }
+
+    public function wishlists()
+    {
+        $this->belongsToMany(\App\Wishlist::class);
+    }
 }

@@ -3,6 +3,7 @@ export default {
         token: localStorage.getItem('token') || null,
         user: [],
         products: [],
+        wishlist: [],
     },
     mutations : {
         loading(state, data) {
@@ -36,7 +37,10 @@ export default {
         },
         carts(state) {
             return state.user.cart || []
-        }
+        },
+        wishlist(state) {
+            return state.user.wishlist || []
+        },
     },
     actions: {
         login({ commit }, data) {
@@ -110,6 +114,13 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
+        },
+        addWishlist(context, payload) {
+            axios.defaults.headers.post['Authentication'] = 'Bearer' + context.state.token
+
+            axios.post('/api/wishlist', payload).then(response => {
+                context.dispatch('getUser')
+            })
         },
         saveToCart(context, payload) {
             axios.defaults.headers.post['Authorization'] = 'Bearer ' + context.state.token

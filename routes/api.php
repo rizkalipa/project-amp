@@ -18,7 +18,7 @@ Route::middleware('auth:api')->group(function() {
     Route::get('/user', function (Request $request) {
         $id = auth()->user()->id;
 
-        return \App\User::where('id', $id)->with('cart.products')->first();
+        return \App\User::where('id', $id)->with('cart.products')->with('wishlist.products')->first();
     });
 
     Route::get('/cart-list/{id}', function($id) {
@@ -28,11 +28,14 @@ Route::middleware('auth:api')->group(function() {
     Route::post('/logout', 'FrontAuthController@logout');
 
     Route::post('/cart', 'CartController@addCart');
+    Route::post('/wishlist', 'WishlistController@add');
 });
 
 Route::post('/login', 'FrontAuthController@login');
 Route::post('/register', 'FrontAuthController@register');
 
+
+Route::get('/wishlist', 'WishlistController@index');
 Route::get('/product-list', function() {
     return \App\Product::get();
 });

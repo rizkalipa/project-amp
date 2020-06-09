@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(\App\Cart::class);
     }
+
+    public function wishlist()
+    {
+        return $this->hasOne(\App\Wishlist::class);
+    }
 }
