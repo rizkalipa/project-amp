@@ -135,6 +135,15 @@ export default {
                         reject(error)
                     })
             })
+        },
+        finishOrder(context, payload) {
+            axios.defaults.headers.post['Authorization'] = 'Bearer ' + context.state.token
+
+            return new Promise((resolve, reject) => {
+                axios.post('api/transaction', payload).then(respon => {
+                    resolve(respon)
+                })
+            }) 
         }
     }
 }

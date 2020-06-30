@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->integer('total_stock');
             $table->bigInteger('price');
             $table->string('image')->nullable();
+            $table->string('total_sold')->nullable();
             $table->unsignedFloat('price_per_box')->nullable();
             $table->dateTime('available_in')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();

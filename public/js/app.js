@@ -1926,9 +1926,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'App'
+  name: 'App',
+  beforeMount: function beforeMount() {
+    var _this = this;
+
+    this.loading = true;
+    this.$store.dispatch('getUser').then(function (response) {
+      _this.$store.dispatch('getProducts');
+
+      _this.loading = false;
+    })["catch"](function (error) {
+      _this.$store.dispatch('getProducts');
+
+      _this.loading = false;
+    });
+  }
 });
 
 /***/ }),
@@ -1962,6 +1975,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CardProduct",
@@ -1973,7 +1989,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     CustomButtom: _CustomButton__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['title', 'image', 'id'],
+  props: ['title', 'image', 'id', 'total_stock'],
   methods: {
     addWishlist: function addWishlist() {
       var _this = this;
@@ -2237,6 +2253,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     carts: function carts() {
@@ -2387,6 +2411,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2475,11 +2500,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Checkout",
   components: {
     TopBanner: _components_TopBanner__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      loading: false
+    };
+  },
+  computed: {
+    carts: function carts() {
+      return this.$store.getters.carts;
+    },
+    total: function total() {
+      var total = this.carts.products.reduce(function (before, next) {
+        return before.price + next.price;
+      });
+      return total;
+    }
+  },
+  methods: {
+    finishOrder: function finishOrder() {
+      var _this = this;
+
+      this.loading = true;
+      this.$store.dispatch('finishOrder', {
+        'user_id': this.carts.user_id,
+        'cart_id': this.carts.id,
+        'total_price': this.total
+      }).then(function (resp) {
+        _this.loading = false;
+
+        _this.$router.push('/');
+      });
+    }
   }
 });
 
@@ -2497,6 +2577,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_FeaturedProduct__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/FeaturedProduct */ "./resources/js/components/FeaturedProduct.vue");
 /* harmony import */ var _components_CardProduct__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/CardProduct */ "./resources/js/components/CardProduct.vue");
 /* harmony import */ var _components_TopBanner__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/TopBanner */ "./resources/js/components/TopBanner.vue");
+//
 //
 //
 //
@@ -2545,20 +2626,6 @@ __webpack_require__.r(__webpack_exports__);
     products: function products() {
       return this.$store.getters.products;
     }
-  },
-  beforeMount: function beforeMount() {
-    var _this = this;
-
-    this.loading = true;
-    this.$store.dispatch('getUser').then(function (response) {
-      _this.$store.dispatch('getProducts');
-
-      _this.loading = false;
-    })["catch"](function (error) {
-      _this.$store.dispatch('getProducts');
-
-      _this.loading = false;
-    });
   }
 });
 
@@ -4097,17 +4164,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "w-full bg-gray-900 mt-8" }, [
       _c("div", { staticClass: "w-4/5 mx-auto py-4 text-center" }, [
         _c("p", { staticClass: "text-gray-500 text-sm" }, [
-          _vm._v("2020 © AMP | On Develop by\n                "),
-          _c(
-            "a",
-            {
-              attrs: {
-                href: "https://instagram.com/rizkalipa",
-                target: "_blank"
-              }
-            },
-            [_vm._v("@rizkalipa 🔥")]
-          )
+          _vm._v("2020 © AMP\n            ")
         ])
       ])
     ])
@@ -4152,6 +4209,10 @@ var render = function() {
         [_vm._t("default")],
         2
       ),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-sm mb-5" }, [
+        _vm._v("\n        Remain stock : " + _vm._s(_vm.total_stock) + "\n    ")
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -4437,106 +4498,88 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "grid md:grid-cols-5 grid-cols-1 gap-5" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "md:col-span-2 bg-gray-200 p-5 flex flex-col justify-center rounded"
-        },
-        [
-          _c("h1", { staticClass: "text-2xl font-bold mb-5" }, [
-            _vm._v("Masker Sensi")
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "text-gray-700 mb-8" }, [
-            _vm._v(
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, vitae."
-            )
-          ]),
-          _vm._v(" "),
-          _c("CartButton")
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm._m(1),
-      _vm._v(" "),
-      _vm._m(2),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "md:col-span-2 bg-gray-200 p-5 flex flex-col justify-center rounded"
-        },
-        [
-          _c("h1", { staticClass: "text-2xl font-bold mb-5" }, [
-            _vm._v("Lakban Super Encep")
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "text-gray-700 mb-8" }, [
-            _vm._v(
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, vitae."
-            )
-          ]),
-          _vm._v(" "),
-          _c("CartButton")
-        ],
-        1
-      )
-    ])
-  ])
+  return _vm._m(0)
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("h1", { staticClass: "text-1xl mb-8" }, [
-      _vm._v("Featured Product "),
-      _c(
-        "span",
-        {
-          staticClass:
-            "text-sm ml-3 bg-red-600 py-1 px-3 text-white rounded-full"
-        },
-        [_vm._v("Best Selling")]
-      )
+    return _c("div", [
+      _c("h1", { staticClass: "text-1xl mb-8" }, [
+        _vm._v("Featured Product "),
+        _c(
+          "span",
+          {
+            staticClass:
+              "text-sm ml-3 bg-red-600 py-1 px-3 text-white rounded-full"
+          },
+          [_vm._v("Best Selling")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "grid md:grid-cols-5 grid-cols-1 gap-5" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "md:col-span-2 bg-gray-200 p-5 flex flex-col justify-center rounded"
+          },
+          [
+            _c("h1", { staticClass: "text-2xl font-bold mb-5" }, [
+              _vm._v("Masker Sensi")
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "text-gray-700 mb-8" }, [
+              _vm._v(
+                "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, vitae."
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "md:col-span-3 border border-gray-700 rounded" },
+          [
+            _c("img", {
+              staticClass: "mx-auto w-2/3",
+              attrs: { src: "/img/produk-2.png" }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "md:col-span-3 border border-gray-700 rounded" },
+          [
+            _c("img", {
+              staticClass: "mx-auto w-2/3",
+              attrs: { src: "/img/produk-1.png" }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "md:col-span-2 bg-gray-200 p-5 flex flex-col justify-center rounded"
+          },
+          [
+            _c("h1", { staticClass: "text-2xl font-bold mb-5" }, [
+              _vm._v("Lem 3M")
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "text-gray-700 mb-8" }, [
+              _vm._v(
+                "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, vitae."
+              )
+            ])
+          ]
+        )
+      ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "md:col-span-3 border border-gray-700 rounded" },
-      [
-        _c("img", {
-          staticClass: "mx-auto w-2/3",
-          attrs: { src: "/img/produk-2.png" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "md:col-span-3 border border-gray-700 rounded" },
-      [
-        _c("img", {
-          staticClass: "mx-auto w-2/3",
-          attrs: { src: "/img/produk-1.png" }
-        })
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -4566,32 +4609,54 @@ var render = function() {
       {
         staticClass: "block bg-white text-black shadow-md mt-5 rounded absolute"
       },
-      _vm._l(_vm.carts.products, function(cart, index) {
-        return _c("router-link", { key: index, attrs: { to: "/login" } }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "px-8 py-3 text-sm hover:bg-gray-300 rounded w-full flex items-center",
-              attrs: { href: "" }
-            },
-            [
-              _c("img", { staticClass: "w-1/5", attrs: { src: cart.image } }),
-              _vm._v(" "),
-              _c("div", { staticClass: "ml-3" }, [
-                _c("p", { staticClass: "text-md mb-2" }, [
-                  _vm._v(_vm._s(cart.name))
-                ]),
+      [
+        _vm._l(_vm.carts.products, function(cart, index) {
+          return _c("router-link", { key: index, attrs: { to: "/login" } }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "px-8 py-3 text-sm hover:bg-gray-300 rounded w-full flex items-center"
+              },
+              [
+                _c("img", { staticClass: "w-1/5", attrs: { src: cart.image } }),
                 _vm._v(" "),
-                _c("p", { staticClass: "text-sm text-gray-500" }, [
-                  _vm._v("Order qty : " + _vm._s(_vm.carts.total_count))
+                _c("div", { staticClass: "ml-3" }, [
+                  _c("p", { staticClass: "text-md mb-2" }, [
+                    _vm._v(_vm._s(cart.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "text-sm text-gray-500" }, [
+                    _vm._v("Order qty : " + _vm._s(_vm.carts.total_count))
+                  ])
                 ])
+              ]
+            )
+          ])
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "px-8 py-3 text-sm rounded w-full flex justify-between items-center"
+          },
+          [
+            _c("router-link", { attrs: { to: "checkout" } }, [
+              _c("p", { staticClass: "text-sm" }, [_vm._v("Checkout")])
+            ]),
+            _vm._v(" "),
+            _c("router-link", { attrs: { to: "" } }, [
+              _c("p", { staticClass: "text-sm text-red-500" }, [
+                _vm._v("Delete All "),
+                _c("i", { staticClass: "fas fa-trash ml-2" })
               ])
-            ]
-          )
-        ])
-      }),
-      1
+            ])
+          ],
+          1
+        )
+      ],
+      2
     )
   ])
 }
@@ -4807,7 +4872,7 @@ var render = function() {
               ? _c("span", { staticClass: "ml-2 text-sm" }, [
                   _vm._v("Hello, " + _vm._s(_vm.username))
                 ])
-              : _vm._e(),
+              : _c("span", { staticClass: "ml-2 text-sm" }, [_vm._v("Login")]),
             _vm._v(" "),
             _c(
               "transition",
@@ -4971,7 +5036,73 @@ var render = function() {
         _c("h1", { staticClass: "text-3xl font-bold" }, [
           _vm._v("Checkout your order")
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "w-4/5 mx-auto" },
+        [
+          _vm._l(_vm.carts.products, function(cart, index) {
+            return _c(
+              "div",
+              { key: index, staticClass: "border-b border-gray-200 flex my-5" },
+              [
+                _c("div", { staticClass: "w-2/5 my-3" }, [
+                  _c("img", {
+                    staticClass: "w-1/4",
+                    attrs: { src: cart.image }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "3/5 align-left" }, [
+                  _c("h1", { staticClass: "text-1xl mb-3 font-bold" }, [
+                    _vm._v(_vm._s(cart.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("h2", { staticClass: "text-sm mb-5" }, [
+                    _vm._v(_vm._s(cart.description))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "text-sm" }, [
+                    _vm._v(
+                      "Price : IDR " +
+                        _vm._s(Intl.NumberFormat("id-ID").format(cart.price))
+                    )
+                  ])
+                ])
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c("div", [
+            _c("h1", { staticClass: "text-2xl font-bold mb-5" }, [
+              _vm._v(
+                "\n                Total orders : IDR " +
+                  _vm._s(Intl.NumberFormat("id-ID").format(_vm.total)) +
+                  "\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "py-2 px-3 text-center text-white rounded bg-blue-600 hover:bg-blue-400 transition duration-150 ease-in-out",
+                staticStyle: { cursor: "pointer" },
+                on: {
+                  click: function($event) {
+                    return _vm.finishOrder()
+                  }
+                }
+              },
+              [_vm._v("\n                Finish Order\n            ")]
+            )
+          ]),
+          _vm._v(" "),
+          _vm.loading ? _c("LoadingScreen") : _vm._e()
+        ],
+        2
+      )
     ],
     1
   )
@@ -5011,7 +5142,7 @@ var render = function() {
         _vm._v(" "),
         _c("p", [
           _vm._v(
-            "\n            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, asperiores aut eaque ipsam maiores numquam officia praesentium qui quibusdam quo.\n        "
+            "\n            Kami menyediakan alat-alat untuk kebutuhan operasional sehari-hari perusahaan agar lebih efisien dan memudahkan.\n        "
           )
         ])
       ]),
@@ -5032,7 +5163,12 @@ var render = function() {
                 "CardProduct",
                 {
                   key: data.id,
-                  attrs: { title: data.name, id: data.id, image: data.image }
+                  attrs: {
+                    title: data.name,
+                    id: data.id,
+                    image: data.image,
+                    total_stock: data.total_stock
+                  }
                 },
                 [
                   _vm._v(
@@ -22768,6 +22904,14 @@ __webpack_require__.r(__webpack_exports__);
           resolve(response);
         })["catch"](function (error) {
           reject(error);
+        });
+      });
+    },
+    finishOrder: function finishOrder(context, payload) {
+      axios.defaults.headers.post['Authorization'] = 'Bearer ' + context.state.token;
+      return new Promise(function (resolve, reject) {
+        axios.post('api/transaction', payload).then(function (respon) {
+          resolve(respon);
         });
       });
     }

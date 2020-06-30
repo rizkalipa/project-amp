@@ -3,7 +3,7 @@
         <TopBanner>
             <h1 class="text-5xl font-bold">Our stunning <br> product</h1><br>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, asperiores aut eaque ipsam maiores numquam officia praesentium qui quibusdam quo.
+                Kami menyediakan alat-alat untuk kebutuhan operasional sehari-hari perusahaan agar lebih efisien dan memudahkan.
             </p>
         </TopBanner>
 
@@ -18,7 +18,8 @@
             </div>
 
             <div class="grid md:grid-cols-3 grid-cols-1 gap-5">
-                <CardProduct v-for="data in products" :title="data.name" :key="data.id" :id="data.id" :image="data.image">
+                <CardProduct v-for="data in products" :title="data.name" :key="data.id" :id="data.id" :image="data.image"
+                    :total_stock="data.total_stock">
                     {{  data.id + ' ' + data.description }}
                 </CardProduct>
             </div>
@@ -43,18 +44,6 @@ export default {
         products() {
             return this.$store.getters.products
         }
-    },
-    beforeMount() {
-        this.loading = true
-        this.$store.dispatch('getUser')
-            .then(response => {
-                this.$store.dispatch('getProducts')
-                this.loading = false
-            })
-            .catch(error => {
-                this.$store.dispatch('getProducts')
-                this.loading = false
-            })
     }
 };
 </script>

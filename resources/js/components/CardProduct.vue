@@ -5,6 +5,9 @@
         <p class="text-sm mb-5 text-gray-800">
             <slot></slot>
         </p>
+        <p class="text-sm mb-5">
+            Remain stock : {{ total_stock }}
+        </p>
         <div class="flex justify-between">
             <CartButton :id="id" />
             <div @click="addWishlist">
@@ -27,7 +30,7 @@
             }
         },
         components: {CustomButtom},
-        props: [ 'title', 'image', 'id' ],
+        props: [ 'title', 'image', 'id', 'total_stock' ],
         methods: {
             addWishlist() {
                 this.loading = true

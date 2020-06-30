@@ -8,7 +8,7 @@
                 <h1 class="text-2xl font-bold mb-5">Masker Sensi</h1>
                 <p class="text-gray-700 mb-8">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, vitae.</p>
 
-                <CartButton />
+                <!-- <CartButton /> -->
             </div>
 
             <div class="md:col-span-3 border border-gray-700 rounded">
@@ -20,10 +20,10 @@
             </div>
 
             <div class="md:col-span-2 bg-gray-200 p-5 flex flex-col justify-center rounded">
-                <h1 class="text-2xl font-bold mb-5">Lakban Super Encep</h1>
+                <h1 class="text-2xl font-bold mb-5">Lem 3M</h1>
                 <p class="text-gray-700 mb-8">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, vitae.</p>
 
-                <CartButton />
+                <!-- <CartButton /> -->
             </div>
 
         </div>

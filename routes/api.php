@@ -17,17 +17,22 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function() {
     Route::get('/user', function (Request $request) {
         $id = auth()->user()->id;
+        $data = \App\User::where('id', $id)->with(['cart' => function($query) {
+            $query->with('products')->where('carts.status', 'ON CART');
+        }])
+        ->with('wishlist.products')->first();
 
-        return \App\User::where('id', $id)->with('cart.products')->with('wishlist.products')->first();
+        return $data;
     });
 
-    Route::get('/cart-list/{id}', function($id) {
-        return \App\Cart::leftJoin('products', 'products.id', '=', 'carts.product_id')->get();;
+    Route::get('/cart-list', function() {
+        return \App\Cart::with('products')->get();
     });
 
     Route::post('/logout', 'FrontAuthController@logout');
 
     Route::post('/cart', 'CartController@addCart');
+    Route::post('/transaction', 'TransactionController@store');
     Route::post('/wishlist', 'WishlistController@add');
 });
 

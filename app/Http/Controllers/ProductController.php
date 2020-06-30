@@ -32,7 +32,7 @@ class ProductController extends Controller
 
         \App\Product::create($new_product);
 
-        return redirect()->route('product.index');
+        return redirect()->route('product.index')->with(['success' => 'Success created new product!']);
     }
 
     public function edit(\App\Product $product) 

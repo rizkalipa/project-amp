@@ -8,6 +8,7 @@
             <p class="px-5" @mouseover="listMenu = true" @mouseleave="listMenu = false" style="cursor: pointer">
                 <span><i class="fas fa-user"></i></span>
                 <span v-if="username" class="ml-2 text-sm">Hello, {{ username }}</span>
+                <span v-else class="ml-2 text-sm">Login</span>
 
                 <transition name="fade">
                     <FloatListMenu v-show="listMenu" />

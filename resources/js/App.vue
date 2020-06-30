@@ -9,8 +9,7 @@
 
       <div class="w-full bg-gray-900 mt-8">
           <div class="w-4/5 mx-auto py-4 text-center">
-              <p class="text-gray-500 text-sm">2020 &copy; AMP | On Develop by
-                  <a href="https://instagram.com/rizkalipa" target="_blank">@rizkalipa &#128293;</a>
+              <p class="text-gray-500 text-sm">2020 &copy; AMP
               </p>
           </div>
       </div>
@@ -20,6 +19,18 @@
 <script>
 export default {
     name: 'App',
+    beforeMount() {
+        this.loading = true
+        this.$store.dispatch('getUser')
+            .then(response => {
+                this.$store.dispatch('getProducts')
+                this.loading = false
+            })
+            .catch(error => {
+                this.$store.dispatch('getProducts')
+                this.loading = false
+            })
+    }
 }
 </script>
 

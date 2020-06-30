@@ -49,7 +49,7 @@
             <input type="file" name="image" value="{{ $product->image }}"><br>
             @error('image') <small class="text-danger">{{ $errors->first('image') }}</small> @enderror
             <br>
-            <img src="{{ $product->image }}" class="img w-50">
+            <img src="{{ asset($product->image) }}" class="img-fluid w-50">
         </div><br>
 
         <div class="form-group">

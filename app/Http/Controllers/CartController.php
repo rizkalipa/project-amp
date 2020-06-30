@@ -10,7 +10,7 @@ class CartController extends Controller
 {
     public function index() 
     {
-        return view('backsite.carts.index', ['carts' => \App\Cart::with('products')->get()]);
+        return view('backsite.carts.index', ['carts' => \App\Cart::with('products')->where('status', 'ON CART')->get()]);
     }
 
     public function addCart(Request $request) 
@@ -19,14 +19,15 @@ class CartController extends Controller
             'total_count' => 'required|min:1'
         ]);
 
-        if (isset(auth()->user()->cart->id)) {
+        if (isset(auth()->user()->cart->id) && auth()->user()->cart->status == 'ON CART') {
             $cart = Cart::find(auth()->user()->cart->id);
         } else {
             $cart = \App\Cart::create([
                 'user_id' => auth()->user()->id,
                 'total_count' => $request->total_count,
-                'total_price' => $request->total_price,
+                'status' => 0,
                 'promo_code' => $request->promo_code,
+                'status' => 'ON CART'
             ]);
         }
 
