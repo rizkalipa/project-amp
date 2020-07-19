@@ -17,10 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function() {
     Route::get('/user', function (Request $request) {
         $id = auth()->user()->id;
-        $data = \App\User::where('id', $id)->with(['cart' => function($query) {
-            $query->with('products')->where('carts.status', 'ON CART');
-        }])
-        ->with('wishlist.products')->first();
+        // $data = \App\User::where('id', $id)->with(['carts' => function($query) {
+        //     $query->with('products')->where('carts.status', 'ON CART');
+        // }])
+        // ->with('wishlist.products')->first();
+
+        $data = \App\User::where('id', auth()->user()->id)->with('cart.products')->with('wishlist.products')->first();
 
         return $data;
     });

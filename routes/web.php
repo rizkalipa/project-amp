@@ -18,7 +18,14 @@ Route::get('/tes', function () {
     return !$wishlist ? 'true' : 'false';
 });
 
-Route::middleware('auth')->group(function() {
+Route::get('tesuser', function () {
+    return auth()->user()->carts;
+});
+
+Route::get('/office-site/login', "BacksiteController@login")->name('login.backsite');
+Route::post('/office-site/login', "Auth\LoginController@login")->name('login.auth');
+
+Route::middleware('auth')->middleware('can:access-backsite')->group(function() {
     Route::get('/office-site', "BacksiteController@index");
     Route::get('/office-site/register', "BacksiteController@register");
     Route::post('/office-site/logout', "Auth\LoginController@logout")->name('logout.auth');
@@ -33,9 +40,8 @@ Route::middleware('auth')->group(function() {
     Route::get('/office-site/carts', 'CartController@index')->name('cart.index');
     Route::get('/office-site/wishlist', 'WishlistController@index')->name('wishlist.index');
     Route::get('/office-site/users', 'UserController@index')->name('user.index');
+    Route::get('/office-site/transaction', 'TransactionController@index')->name('transaction.index');
 });
-Route::get('/office-site/login', "BacksiteController@login")->name('login.backsite');
-Route::post('/office-site/login', "Auth\LoginController@login")->name('login.auth');
 
 Route::get('/{any}', 'HomeController@index')->where('any', '.*');
 

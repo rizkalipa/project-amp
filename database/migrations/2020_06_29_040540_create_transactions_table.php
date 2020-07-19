@@ -17,7 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('cart_id');
+            $table->unsignedBigInteger('status');
             $table->integer('total_price');
 
             $table->timestamps();

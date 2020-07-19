@@ -1,7 +1,7 @@
 <template>
     <div class="border border-gray-700 rounded p-5">
         <img :src="image" class="mb-5" style="height: 250px;">
-        <p class="text-md mb-5">{{ title }}</p>
+        <p class="text-md mb-5 font-bold">{{ title }}</p>
         <p class="text-sm mb-5 text-gray-800">
             <slot></slot>
         </p>

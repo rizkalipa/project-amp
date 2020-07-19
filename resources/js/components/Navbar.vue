@@ -14,7 +14,7 @@
                     <FloatListMenu v-show="listMenu" />
                 </transition>
             </p>
-            <p class="px-5" @mouseover="cartList = true" @mouseleave="cartList = false" :class="{ 'mx-8 py-1 rounded-full text-white bg-blue-600': cartFillStyle }">
+            <p class="px-5" @mouseover="cartList = true && products.length > 0" @mouseleave="cartList = false" :class="{ 'mx-8 py-1 rounded-full text-white bg-blue-600': cartFillStyle }">
                 <span><i class="fas fa-shopping-cart"></i></span>
                 <span v-if="products.length > 0" class="ml-2 text-sm">{{ products.length }}</span>
 

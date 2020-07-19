@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(\App\Wishlist::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(\App\Transaction::class);
+    }
 }

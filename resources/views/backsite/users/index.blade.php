@@ -18,7 +18,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Created At</th>
-                <th>Role ID</th>
+                <th>User Level</th>
                 <th>Action</th>
             </tr>
           </thead>
@@ -28,7 +28,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Created At</th>
-                <th>Role ID</th>
+                <th>User Level</th>
                 <th>Action</th>
             </tr>
           </tfoot>
@@ -39,10 +39,18 @@
                 <td>{{ $data->name }}</td>
                 <td>{{ $data->email }}</td>
                 <td>{{ $data->created_at }}</td>
-                <td>-</td>
+                <td>{{ $data->role_id == 1 ? 'Customer' : 'Admin' }}</td>
                 <td>
-                    Edit | Delete
-                </td>
+                  <a class="btn btn-sm" href=""><span class=""><i class="fas fa-edit text-primary"></i></span></a>
+                  
+                  <form action="" method="POST">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $data->id }}">
+                    <button type="submit" class="btn btn-sm">
+                      <span><i class="fas fa-trash text-danger"></i></span>
+                    </button>
+                  </form>
+              </td>
             </tr>
             @endforeach
           </tbody>

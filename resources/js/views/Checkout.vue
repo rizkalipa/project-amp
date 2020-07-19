@@ -10,7 +10,8 @@
                 </div>
                 <div class="3/5 align-left">
                     <h1 class="text-1xl mb-3 font-bold">{{ cart.name }}</h1>
-                    <h2 class="text-sm mb-5">{{ cart.description }}</h2>
+                    <h2 class="text-sm mb-3">{{ cart.description }}</h2>
+                    <p class="text-sm mb-3">Qty. : {{ cart.pivot.total_count }}</p>
                     <p class="text-sm">Price : IDR {{ Intl.NumberFormat('id-ID').format(cart.price) }}</p>
                 </div>
             </div>
@@ -44,7 +45,8 @@
                 return this.$store.getters.carts
             },
             total() {
-                let total = this.carts.products.reduce((before, next) => before.price + next.price)
+                let total = 0
+                this.carts.products.forEach((product) => { total += product.price * product.pivot.total_count })
                 return total
             }
         },
@@ -53,7 +55,7 @@
                 this.loading = true
                 this.$store.dispatch('finishOrder', {
                     'user_id': this.carts.user_id,
-                    'cart_id': this.carts.id,
+                    'status': 'PAID',
                     'total_price': this.total,
                 }).then(resp => {
                     this.loading = false

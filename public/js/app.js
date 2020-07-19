@@ -1928,7 +1928,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
-  beforeMount: function beforeMount() {
+  mounted: function mounted() {
     var _this = this;
 
     this.loading = true;
@@ -2523,6 +2523,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Checkout",
@@ -2539,8 +2540,9 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters.carts;
     },
     total: function total() {
-      var total = this.carts.products.reduce(function (before, next) {
-        return before.price + next.price;
+      var total = 0;
+      this.carts.products.forEach(function (product) {
+        total += product.price * product.pivot.total_count;
       });
       return total;
     }
@@ -2552,7 +2554,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       this.$store.dispatch('finishOrder', {
         'user_id': this.carts.user_id,
-        'cart_id': this.carts.id,
+        'status': 'PAID',
         'total_price': this.total
       }).then(function (resp) {
         _this.loading = false;
@@ -4201,7 +4203,9 @@ var render = function() {
         attrs: { src: _vm.image }
       }),
       _vm._v(" "),
-      _c("p", { staticClass: "text-md mb-5" }, [_vm._v(_vm._s(_vm.title))]),
+      _c("p", { staticClass: "text-md mb-5 font-bold" }, [
+        _vm._v(_vm._s(_vm.title))
+      ]),
       _vm._v(" "),
       _c(
         "p",
@@ -4627,7 +4631,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("p", { staticClass: "text-sm text-gray-500" }, [
-                    _vm._v("Order qty : " + _vm._s(_vm.carts.total_count))
+                    _vm._v("Order qty : " + _vm._s(cart.pivot.total_count))
                   ])
                 ])
               ]
@@ -4904,7 +4908,7 @@ var render = function() {
             },
             on: {
               mouseover: function($event) {
-                _vm.cartList = true
+                _vm.cartList =  true && _vm.products.length > 0
               },
               mouseleave: function($event) {
                 _vm.cartList = false
@@ -5059,8 +5063,12 @@ var render = function() {
                     _vm._v(_vm._s(cart.name))
                   ]),
                   _vm._v(" "),
-                  _c("h2", { staticClass: "text-sm mb-5" }, [
+                  _c("h2", { staticClass: "text-sm mb-3" }, [
                     _vm._v(_vm._s(cart.description))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "text-sm mb-3" }, [
+                    _vm._v("Qty. : " + _vm._s(cart.pivot.total_count))
                   ]),
                   _vm._v(" "),
                   _c("p", { staticClass: "text-sm" }, [
@@ -22910,8 +22918,9 @@ __webpack_require__.r(__webpack_exports__);
     finishOrder: function finishOrder(context, payload) {
       axios.defaults.headers.post['Authorization'] = 'Bearer ' + context.state.token;
       return new Promise(function (resolve, reject) {
-        axios.post('api/transaction', payload).then(function (respon) {
-          resolve(respon);
+        axios.post('api/transaction', payload).then(function (response) {
+          context.dispatch('getUser');
+          resolve(response);
         });
       });
     }

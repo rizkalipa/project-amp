@@ -140,8 +140,9 @@ export default {
             axios.defaults.headers.post['Authorization'] = 'Bearer ' + context.state.token
 
             return new Promise((resolve, reject) => {
-                axios.post('api/transaction', payload).then(respon => {
-                    resolve(respon)
+                axios.post('api/transaction', payload).then(response => {
+                    context.dispatch('getUser')
+                    resolve(response)
                 })
             }) 
         }

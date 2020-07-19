@@ -19,9 +19,9 @@ class CartController extends Controller
             'total_count' => 'required|min:1'
         ]);
 
-        if (isset(auth()->user()->cart->id) && auth()->user()->cart->status == 'ON CART') {
-            $cart = Cart::find(auth()->user()->cart->id);
-        } else {
+        $cart = \App\Cart::where(['status' => 'ON CART', 'user_id' => auth()->user()->id])->first();
+
+        if (!$cart) {
             $cart = \App\Cart::create([
                 'user_id' => auth()->user()->id,
                 'total_count' => $request->total_count,
@@ -31,6 +31,6 @@ class CartController extends Controller
             ]);
         }
 
-        $cart->products()->save(Product::find($request->product_id));
+        $cart->products()->attach(Product::find($request->product_id), ['total_count' => $request->total_count]);
     }
 }

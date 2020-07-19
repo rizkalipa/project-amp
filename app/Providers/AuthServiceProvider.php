@@ -31,5 +31,9 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Passport::refreshTokensExpireIn(now()->addDays(7));
+
+        Gate::define('access-backsite', function($user) {
+            return $user->role_id == 2;
+        });
     }
 }

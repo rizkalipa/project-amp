@@ -17,4 +17,9 @@ class Product extends Model
     {
         $this->belongsToMany(\App\Wishlist::class);
     }
+
+    public function transactions()
+    {
+        return $this->belongsToMany(\App\Transaction::class);
+    }
 }

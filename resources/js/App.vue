@@ -19,7 +19,7 @@
 <script>
 export default {
     name: 'App',
-    beforeMount() {
+    mounted() {
         this.loading = true
         this.$store.dispatch('getUser')
             .then(response => {

@@ -6,7 +6,7 @@
                     <img :src="cart.image" class="w-1/5">
                     <div class="ml-3">
                         <p class="text-md mb-2">{{ cart.name }}</p>
-                        <p class="text-sm text-gray-500">Order qty : {{ carts.total_count }}</p>
+                        <p class="text-sm text-gray-500">Order qty : {{ cart.pivot.total_count }}</p>
                     </div>
                 </div>
             </router-link>
